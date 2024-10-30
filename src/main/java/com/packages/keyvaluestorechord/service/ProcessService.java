@@ -13,11 +13,29 @@ public class ProcessService {
 
     public ProcessAttr addNewProcess (int startRange, int endRange) {
         ProcessAttr newProcess = new ProcessAttr(nextProcessId++, startRange, endRange, basePort++);
+        if (!processes.isEmpty()) {
+            adjustRange(processes, newProcess);
+        }
         processes.add(newProcess);
         Collections.sort(processes, Comparator.comparingInt(ProcessAttr::getStartRange));
         updateProcessLinks();
         System.out.println(getProcessDetails(newProcess));
         return newProcess;
+    }
+
+    private void adjustRange (List<ProcessAttr> processes, ProcessAttr newProcess) {
+        for (ProcessAttr process : processes) {
+            if (newProcess.getStartRange() <= process.getEndRange()
+                    && newProcess.getEndRange() >= process.getStartRange()) {
+                if (process.getEndRange() >= newProcess.getStartRange()
+                        && process.getStartRange() < newProcess.getStartRange()) {
+                    process.setEndRange(newProcess.getStartRange() - 1);
+                } else if (process.getStartRange() <= newProcess.getEndRange()
+                        && process.getEndRange() > newProcess.getEndRange()) {
+                    process.setStartRange(newProcess.getEndRange() + 1);
+                }
+            }
+        }
     }
 
     private void updateProcessLinks () {
