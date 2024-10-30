@@ -14,3 +14,13 @@ The start range of overlapping processes is updated if the new process overlaps 
 Upon adding a new process, links between processes are updated to maintain the relationships:
 Each process will have a reference to its predecessor (the previous process) and successor (the next process).
 The links are adjusted accordingly after range adjustments to ensure the correct order and relationships.
+
+##### UserController
+
+assignUserToProcess: Assigns a User to the correct process based on userId hash.
+getUserFromProcess: Retrieves a User by userId from the appropriate process.
+
+##### UserService
+
+assignUserToProcess: Calculates userId hash, finds the right process, and stores the User.
+getUserFromProcess: Calculates userId hash, locates the process, and retrieves the User.
