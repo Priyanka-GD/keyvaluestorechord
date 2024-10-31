@@ -34,7 +34,7 @@ public class UserService {
         return "No process found for the user ID: " + user.getUserId();
     }
 
-    public String getUserFromProcess (String userName) {
+   /* public String getUserFromProcess (String userName) {
         int hashValue = calculateHash(userName);
         List<ProcessAttr> processes = processService.getProcesses();
         for (ProcessAttr process : processes) {
@@ -48,7 +48,7 @@ public class UserService {
             }
         }
         return "No user found with name : " + userName;
-    }
+    }*/
 
     private int calculateHash (String userId) {
         return Math.abs(userId.hashCode()) % 100;
@@ -56,5 +56,31 @@ public class UserService {
 
     private String getUserDetails (User user) {
         return "User Found : " + user.getName() + " address : " + user.getAddress() + " email : " + user.getEmail();
+    }
+
+    public String getUserFromProcess (String userName) {
+        int hashValue = calculateHash(userName);
+        ProcessAttr currentProcess = processService.getProcesses().get(0);
+
+        while (true) {
+            if (hashValue >= currentProcess.getStartRange() && hashValue <= currentProcess.getEndRange()) {
+                Map<Integer, User> processDataStore = currentProcess.getDataStore();
+                User existingUser = processDataStore.get(hashValue);
+                return getUserDetails(existingUser);
+            }
+            ProcessAttr[] fingerTable = currentProcess.getFingerTable();
+            ProcessAttr nextProcess = null;
+
+            for (int k = fingerTable.length - 1; k >= 0; k--) {
+                if (fingerTable[k] != null && fingerTable[k].getStartRange() <= hashValue) {
+                    nextProcess = fingerTable[k];
+                    break;
+                }
+            }
+            if (nextProcess == null) {
+                nextProcess = currentProcess.getSuccessor();
+            }
+            currentProcess = nextProcess;
+        }
     }
 }

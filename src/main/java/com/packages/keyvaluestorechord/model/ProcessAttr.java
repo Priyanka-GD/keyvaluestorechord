@@ -15,12 +15,14 @@ public class ProcessAttr {
     @JsonIgnore
     ProcessAttr predecessor;
     Map<Integer, User> dataStore;
+    private ProcessAttr[] fingerTable;
 
     public ProcessAttr (int processId, int startRange, int endRange, int port) {
         this.processId = processId;
         this.startRange = startRange;
         this.endRange = endRange;
         this.port = port;
+        this.fingerTable = new ProcessAttr[100];
     }
 
     public int getProcessId () {
@@ -85,5 +87,13 @@ public class ProcessAttr {
 
     public void setDataStore (Map<Integer, User> dataStore) {
         this.dataStore = dataStore;
+    }
+
+    public ProcessAttr[] getFingerTable () {
+        return fingerTable;
+    }
+
+    public void setFingerTable (ProcessAttr[] fingerTable) {
+        this.fingerTable = fingerTable;
     }
 }

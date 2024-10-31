@@ -73,4 +73,33 @@ public class ProcessService {
                 ", Successor ID: " + (process.getSuccessor() != null ? process.getSuccessor().getProcessId() : "None") +
                 ", Predecessor ID: " + (process.getPredecessor() != null ? process.getPredecessor().getProcessId() : "None");
     }
+
+    public void buildFingerTables () {
+        int n = processes.size();
+        for (int i = 0; i < n; i++) {
+            ProcessAttr currentProcess = processes.get(i);
+            ProcessAttr[] fingerTable = new ProcessAttr[100];
+
+            for (int k = 0; k < fingerTable.length; k++) {
+                // Calculate the start of the range for each entry in the finger table
+                int start = (currentProcess.getStartRange() + (1 << k)) % 100;
+
+                // Find the process responsible for this range
+                ProcessAttr successor = findSuccessor(start);
+                fingerTable[k] = successor;
+            }
+            currentProcess.setFingerTable(fingerTable);
+        }
+    }
+
+    private ProcessAttr findSuccessor (int start) {
+        // Find the process responsible for the given range
+        for (ProcessAttr process : processes) {
+            if (start >= process.getStartRange() && start <= process.getEndRange()) {
+                return process;
+            }
+        }
+        return processes.get(0); // Fallback to the first process if none found
+    }
+
 }
