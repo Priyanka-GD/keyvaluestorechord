@@ -11,6 +11,10 @@ public class ProcessService {
     private int nextProcessId = 1;
     private int basePort = 8081;
 
+    public List<ProcessAttr> getProcesses () {
+        return processes;
+    }
+
     public ProcessAttr addNewProcess (int startRange, int endRange) {
         ProcessAttr newProcess = new ProcessAttr(nextProcessId++, startRange, endRange, basePort++);
         if (!processes.isEmpty()) {
@@ -19,7 +23,9 @@ public class ProcessService {
         processes.add(newProcess);
         Collections.sort(processes, Comparator.comparingInt(ProcessAttr::getStartRange));
         updateProcessLinks();
-        System.out.println(getProcessDetails(newProcess));
+        for (ProcessAttr process : processes) {
+            System.out.println(getProcessDetails(process));
+        }
         return newProcess;
     }
 

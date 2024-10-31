@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{userName}")
-    public User getUserFromProcess (@PathVariable String userName) {
+    public String getUserFromProcess (@PathVariable String userName) {
         return userService.getUserFromProcess(userName);
     }
 }
