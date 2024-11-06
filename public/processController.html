@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Process</title>
+    <link rel="stylesheet" href="/public/css/process.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Create a New Process</h1>
+    </header>
+    <form id="processForm" class="form-container">
+        <div class="form-group">
+            <label for="startRange">Start Range:</label>
+            <input type="number" id="startRange" name="startRange" required>
+        </div>
+        <div class="form-group">
+            <label for="endRange">End Range:</label>
+            <input type="number" id="endRange" name="endRange" required>
+        </div>
+        <button type="submit">Create Process</button>
+    </form>
+    <p id="responseMessage"></p>
+</div>
+</body>
+</html>
